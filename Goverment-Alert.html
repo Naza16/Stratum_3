@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STRATUM - Security Alerts & Emergency Protocols</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --slate-950: #020617;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748b;
+            --slate-400: #94a3b8;
+            --slate-300: #cbd5e1;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            
+            --purple-400: #a78bfa;
+            --purple-500: #8b5cf6;
+            --purple-600: #7c3aed;
+            
+            --emerald-400: #34d399;
+            --emerald-500: #10b981;
+            
+            --yellow-400: #fbbf24;
+            --yellow-500: #f59e0b;
+            
+            --red-400: #f87171;
+            --red-500: #ef4444;
+            --red-600: #dc2626;
+            
+            --orange-400: #fb923c;
+            --orange-500: #f97316;
+            
+            --cyan-400: #22d3ee;
+            --pink-600: #db2777;
+
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--slate-950) 0%, var(--slate-900) 50%, var(--slate-800) 100%);
+            color: white;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            25% { transform: translateY(-20px) scale(1.1); }
+            50% { transform: translateY(-10px) scale(0.9); }
+            75% { transform: translateY(-30px) scale(1.05); }
+        }
+
+       /* Header */
+       .header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--blue-500), var(--purple-600));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--blue-400), var(--purple-400));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text p {
+            font-size: 10px;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .gov-badge {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--red-400);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--slate-400);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .nav-links a.active {
+            color: var(--blue-400);
+            border-bottom: 2px solid var(--blue-400);
+        }
+
+        .nav-links a:hover {
+            color: var(--slate-300);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--red-500), var(--pink-600));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 32px 0;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: var(--slate-400);
+            font-size: 16px;
+        }
+
+        .threat-level-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        .threat-low {
+            background: rgba(52, 211, 153, 0.2);
+            color: var(--emerald-400);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+
+        .threat-medium {
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--yellow-400);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .threat-high {
+            background: rgba(248, 113, 113, 0.2);
+            color: var(--red-400);
+            border: 1px solid rgba(248, 113, 113, 0.2);
+        }
+
+        .threat-critical {
+            background: rgba(248, 113, 113, 0.2);
+            color: var(--red-600);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--slate-800);
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+            margin-bottom: 24px;
+        }
+
+        .card:hover {
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .card-header {
+            padding: 24px 24px 0 24px;
+        }
+
+        .card-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            padding: 0 24px 24px 24px;
+        }
+
+        /* Alert Statistics */
+        .alert-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--slate-800);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(15, 23, 42, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--slate-400);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .stat-trend {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+
+
+        /* Emergency Protocols */
+        .emergency-protocols {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .protocol-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--slate-800);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .protocol-card:hover {
+            background: rgba(15, 23, 42, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .protocol-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .protocol-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .protocol-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .protocol-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .protocol-description {
+            color: var(--slate-400);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .protocol-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .status-inactive {
+            color: var(--slate-500);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-active {
+            color: var(--red-400);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: pulse-red 2s infinite;
+        }
+
+        .protocol-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-emergency {
+            background: var(--red-500);
+            color: white;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-emergency:hover {
+            background: var(--red-600);
+            transform: translateY(-1px);
+        }
+
+        .btn-emergency:disabled {
+            background: var(--slate-600);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--slate-300);
+            border: 1px solid var(--slate-700);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-danger {
+            background: var(--red-500);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: var(--red-600);
+        }
+
+        .btn-purple {
+            background: var(--red-500);
+            color: white;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-purple:hover {
+            background: var(--purple-600);
+            transform: translateY(-1px);
+        }
+
+        /* Enhanced Map */
+        .threat-map {
+            height: 500px;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border-radius: 12px;
+            border: 1px solid var(--slate-700);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(100, 116, 139, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(100, 116, 139, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .map-districts {
+            position: absolute;
+            inset: 20px;
+        }
+
+        .district {
+            position: absolute;
+            border: 2px solid rgba(100, 116, 139, 0.3);
+            border-radius: 8px;
+            background: rgba(30, 41, 59, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .district:hover {
+            background: rgba(30, 41, 59, 0.4);
+            border-color: var(--blue-400);
+            transform: scale(1.02);
+        }
+
+        .district-1 { top: 10%; left: 10%; width: 25%; height: 20%; color: var(--emerald-400); }
+        .district-2 { top: 10%; left: 40%; width: 20%; height: 25%; color: var(--blue-400); }
+        .district-3 { top: 10%; right: 10%; width: 25%; height: 30%; color: var(--yellow-400); }
+        .district-4 { top: 40%; left: 10%; width: 20%; height: 25%; color: var(--orange-400); }
+        .district-5 { top: 45%; left: 35%; width: 30%; height: 20%; color: var(--red-400); }
+        .district-6 { top: 40%; right: 10%; width: 25%; height: 25%; color: var(--purple-400); }
+        .district-7 { bottom: 10%; left: 10%; width: 35%; height: 25%; color: var(--cyan-400); }
+        .district-8 { bottom: 10%; right: 10%; width: 30%; height: 20%; color: var(--pink-600); }
+
+        .threat-markers {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .threat-marker {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            animation: pulse-marker 2s infinite;
+            cursor: pointer;
+            pointer-events: all;
+        }
+
+        .threat-marker::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: inherit;
+            opacity: 0.3;
+            animation: ripple 2s infinite;
+        }
+
+        .marker-critical {
+            background: var(--red-600);
+            box-shadow: 0 0 20px rgba(248, 113, 113, 0.8);
+        }
+
+        .marker-high {
+            background: var(--red-400);
+            box-shadow: 0 0 15px var(--red-400);
+        }
+
+        .marker-medium {
+            background: var(--orange-400);
+            box-shadow: 0 0 10px var(--orange-400);
+        }
+
+        .marker-low {
+            background: var(--emerald-500);
+            box-shadow: 0 0 8px var(--emerald-500);
+        }
+
+        @keyframes pulse-marker {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 0.3; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        .map-controls {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .map-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--slate-700);
+            border-radius: 8px;
+            color: var(--slate-300);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .map-btn:hover {
+            background: rgba(15, 23, 42, 0.9);
+            color: white;
+            border-color: var(--blue-400);
+        }
+
+        .map-legend {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--slate-700);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* Unit Status */
+        .unit-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .unit-card {
+            background: rgba(30, 41, 59, 0.3);
+            border: 1px solid var(--slate-700);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .unit-number {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .unit-label {
+            color: var(--slate-400);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Police Reports */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .report-item {
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .report-title {
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .report-time {
+            color: var(--slate-400);
+            font-size: 11px;
+        }
+
+        .report-description {
+            color: var(--slate-300);
+            font-size: 13px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .report-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .report-location {
+            color: var(--slate-400);
+        }
+
+        .report-status {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .status-investigating {
+            background: var(--slate-700);
+            color: var(--text-primary);
+        }
+
+        .status-resolved {
+            background: rgba(52, 211, 153, 0.2);
+            color: var(--emerald-400);
+        }
+
+        .status-pending {
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--yellow-400);
+        }
+
+        /* Active Alerts */
+        .alerts-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .alert-item {
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .alert-item:hover {
+            background: rgba(30, 41, 59, 0.5);
+        }
+
+        .alert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .alert-title {
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .alert-time {
+            color: var(--slate-400);
+            font-size: 11px;
+        }
+
+        .alert-description {
+            color: var(--slate-300);
+            font-size: 13px;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .alert-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .alert-btn {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-investigate {
+            background: rgba(96, 165, 250, 0.2);
+            color: var(--blue-400);
+        }
+
+        .btn-investigate:hover {
+            background: rgba(96, 165, 250, 0.3);
+        }
+
+        .btn-escalate {
+            background: rgba(251, 146, 60, 0.2);
+            color: var(--orange-400);
+        }
+
+        .btn-escalate:hover {
+            background: rgba(251, 146, 60, 0.3);
+        }
+
+        .btn-dismiss {
+            background: var(--red-400);
+            color: #fff;
+        }
+
+        .btn-dismiss:hover {
+            background: var(--red-500);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--slate-900);
+            border: 1px solid var(--slate-800);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--slate-400);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .modal-body {
+            color: var(--slate-300);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .confirmation-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        /* IEC Enforcement Controls */
+        .iec-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .iec-control-card {
+            background: rgba(30, 41, 59, 0.3);
+            border: 1px solid var(--slate-700);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .iec-control-title {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .iec-control-description {
+            color: var(--slate-400);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .iec-threshold {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .threshold-input {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--slate-700);
+            border-radius: 4px;
+            padding: 4px 8px;
+            color: white;
+            font-size: 12px;
+            width: 80px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .reports-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .emergency-protocols {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            
+            .alert-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--slate-800);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--slate-600);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--slate-500);
+        }
+
+        .alert-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--red-500);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-family: "Segoe UI", sans-serif;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow:
+            0 2px 5px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition:
+            background-color 0.4s ease,
+            box-shadow 0.3s ease,
+            transform 0.2s ease;
+        }
+
+        .alert-link:hover {
+            background-color: var(--red-600);
+            box-shadow:
+            0 4px 10px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .alert-link:focus {
+            outline: none;
+            box-shadow:
+            0 0 0 3px rgba(198, 40, 40, 0.5);
+        }
+
+        .footer {
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-cyan);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--text-secondary);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(148, 163, 184, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary-cyan);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .status-badge {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+            display: inline-block;
+            color: #fff; /* blanco por defecto */
+        }
+
+        .status-critical {
+            background: var(--red-600);
+        }
+
+        .status-high {
+            background: var(--red-400);
+        }
+
+        .status-medium {
+            background: var(--orange-400);
+            color: #fff; 
+        }
+
+        .status-low {
+        background: var(--emerald-500);
+        color: #000; /* mejor contraste sobre naranja */
+        }
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="nav-left">
+                    <div class="logo-section">
+                        <div class="logo-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h1>STRATUM</h1>
+                            <p>Government Portal</p>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="nav-links">
+                    <li><a href="Goverment-Dashboard.html">Dashboard</a></li>
+                    <li><a href="#" class="active">Alerts</a></li>
+                    <li><a href="Goverment-Reports.html">Reports</a></li>
+                </ul>
+
+                <div class="nav-right">
+                    <a href="#" class="alert-link">Active Alerts</a>
+                    <div class="avatar">GA</div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Security Alerts & Emergency Protocols</h1>
+                    <p class="page-subtitle">Real-time threat monitoring and emergency response management</p>
+                </div>
+                <div class="threat-level-indicator threat-high" id="threat-level">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Threat Level: High</span>
+                </div>
+            </div>
+
+            <!-- Alert Statistics -->
+            <div class="alert-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="active-alerts">0</div>
+                    <div class="stat-label">Active Alerts</div>
+                    <div class="stat-trend trend-up">
+                        <span>+15% this hour</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-number"  id="critical-threats">0</div>
+                    <div class="stat-label">Critical Threats</div>
+                    <div class="stat-trend trend-up">
+                        <span>+3 new</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-number"  id="investigations">0</div>
+                    <div class="stat-label">Active Investigations</div>
+                    <div class="stat-trend trend-down">
+                        <span>-8% resolved</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-number"  id="low-iec-citizens">0</div>
+                    <div class="stat-label">Low IEC Citizens</div>
+                    <div class="stat-trend trend-up">
+                        <span>+5% flagged</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-number" id="surveillance-coverage">0</div>
+                    <div class="stat-label">Surveillance Coverage</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+12% expanded</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Protocols -->
+            <div class="emergency-protocols">
+                <div class="protocol-card protocol-lockdown">
+                    <div class="protocol-header">
+                        <div class="protocol-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div>
+                            <div class="protocol-title">Emergency Lockdown</div>
+                        </div>
+                    </div>
+                    <div class="protocol-description">
+                        Immediately restrict all citizen movement and activate security checkpoints across all districts.
+                    </div>
+                    <div class="protocol-status">
+                        <span class="status-inactive" id="lockdown-status">Inactive</span>
+                        <span style="color: var(--slate-500); font-size: 11px;">Last activated: Never</span>
+                    </div>
+                    <div class="protocol-actions">
+                        <button class="btn btn-emergency" onclick="activateProtocol('lockdown')" id="lockdown-btn">
+                            <i class="fas fa-lock"></i>
+                            Activate Lockdown
+                        </button>
+                    </div>
+                </div>
+
+                <div class="protocol-card protocol-surveillance">
+                    <div class="protocol-header">
+                        <div class="protocol-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div>
+                            <div class="protocol-title">Enhanced Surveillance</div>
+                        </div>
+                    </div>
+                    <div class="protocol-description">
+                        Activate advanced monitoring systems and increase surveillance coverage across all sectors.
+                    </div>
+                    <div class="protocol-status">
+                        <span class="status-active" id="surveillance-status">Active</span>
+                        <span style="color: var(--slate-500); font-size: 11px;">Activated: 2024-01-10</span>
+                    </div>
+                    <div class="protocol-actions">
+                        <button class="btn btn-secondary" onclick="deactivateProtocol('surveillance')" id="surveillance-btn">
+                            <i class="fas fa-eye-slash"></i>
+                            Deactivate
+                        </button>
+                    </div>
+                </div>
+
+                <div class="protocol-card protocol-iec-enforcement">
+                    <div class="protocol-header">
+                        <div class="protocol-icon">
+                            <i class="fas fa-gavel"></i>
+                        </div>
+                        <div>
+                            <div class="protocol-title">IEC Score Enforcement</div>
+                        </div>
+                    </div>
+                    <div class="protocol-description">
+                        Execute emergency protocols on citizens with critically low IEC scores.
+                    </div>
+                    <div class="protocol-status">
+                        <span class="status-inactive" id="iec-enforcement-status">Inactive</span>
+                        <span style="color: var(--slate-500); font-size: 11px;">Last activated: 2023-12-03</span>
+                    </div>
+                    <div class="protocol-actions">
+                        <button class="btn btn-purple" onclick="activateProtocol('iec-enforcement')" id="iec-enforcement-btn">
+                            <i class="fas fa-gavel"></i>
+                            Activate IEC Enforcement
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IEC Enforcement Controls -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-user-shield"></i>
+                        IEC Score Enforcement Controls
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="iec-controls">
+                        <div class="iec-control-card">
+                            <div class="iec-control-title">
+                                <i class="fas fa-ban" style="color: var(--red-400);"></i>
+                                Movement Restriction
+                            </div>
+                            <div class="iec-control-description">
+                                Restrict movement for citizens below threshold score
+                            </div>
+                            <div class="iec-threshold">
+                                <span style="color: var(--slate-400); font-size: 12px;">Threshold:</span>
+                                <input type="number" class="threshold-input" value="400" id="movement-threshold">
+                                <span style="color: var(--slate-400); font-size: 12px;">IEC Score</span>
+                            </div>
+                            <button class="btn btn-emergency" onclick="executeIECAction('movement-restriction')">
+                                <i class="fas fa-ban"></i>
+                                Execute Restriction
+                            </button>
+                        </div>
+
+                        <div class="iec-control-card">
+                            <div class="iec-control-title">
+                                <i class="fas fa-credit-card"></i>
+                                Service Suspension
+                            </div>
+                            <div class="iec-control-description">
+                                Suspend access to public services and benefits
+                            </div>
+                            <div class="iec-threshold">
+                                <span style="color: var(--slate-400); font-size: 12px;">Threshold:</span>
+                                <input type="number" class="threshold-input" value="300" id="service-threshold">
+                                <span style="color: var(--slate-400); font-size: 12px;">IEC Score</span>
+                            </div>
+                            <button class="btn btn-emergency" onclick="executeIECAction('service-suspension')">
+                                <i class="fas fa-credit-card"></i>
+                                Suspend Services
+                            </button>
+                        </div>
+
+                        <div class="iec-control-card">
+                            <div class="iec-control-title">
+                                <i class="fas fa-eye"></i>
+                                Enhanced Monitoring
+                            </div>
+                            <div class="iec-control-description">
+                                Increase surveillance on flagged individuals
+                            </div>
+                            <div class="iec-threshold">
+                                <span style="color: var(--slate-400); font-size: 12px;">Threshold:</span>
+                                <input type="number" class="threshold-input" value="500" id="monitoring-threshold">
+                                <span style="color: var(--slate-400); font-size: 12px;">IEC Score</span>
+                            </div>
+                            <button class="btn btn-emergency" onclick="executeIECAction('enhanced-monitoring')">
+                                <i class="fas fa-eye"></i>
+                                Enhance Monitoring
+                            </button>
+                        </div>
+
+                        <div class="iec-control-card">
+                            <div class="iec-control-title">
+                                <i class="fas fa-handcuffs"></i>
+                                Detention Protocol
+                            </div>
+                            <div class="iec-control-description">
+                                Authorize detention for extremely low scores
+                            </div>
+                            <div class="iec-threshold">
+                                <span style="color: var(--slate-400); font-size: 12px;">Threshold:</span>
+                                <input type="number" class="threshold-input" value="200" id="detention-threshold">
+                                <span style="color: var(--slate-400); font-size: 12px;">IEC Score</span>
+                            </div>
+                            <button class="btn btn-emergency" onclick="executeIECAction('detention-protocol')">
+                                <i class="fas fa-handcuffs"></i>
+                                Authorize Detention
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                   <!-- Unit Availability -->
+                   <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-users"></i>
+                            Unit Availability Status
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="unit-status">
+                            <div class="unit-card">
+                                <div class="unit-number" style="color: var(--emerald-400);" id="patrol-units">0</div>
+                                <div class="unit-label">Patrol Units Available</div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-number" id="tactical-teams">0</div>
+                                <div class="unit-label">Tactical Teams Ready</div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-number" id="surveillance-drones">0</div>
+                                <div class="unit-label">Surveillance Drones</div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-number" id="cyber-units">0</div>
+                                <div class="unit-label">Cyber Security Units</div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-number" style="color: var(--red-400);" id="units-deployed">0</div>
+                                <div class="unit-label">Units Currently Deployed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Enhanced Threat Map and Reports -->
+            <div class="reports-grid">
+                <!-- Enhanced Threat Map -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-map-marked-alt"></i>
+                            Interactive Threat Distribution Map
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="threat-map">
+                            <div class="map-grid"></div>
+                            <div class="map-districts">
+                                <div class="district district-1" onclick="selectDistrict(1)">District 1</div>
+                                <div class="district district-2" onclick="selectDistrict(2)">District 2</div>
+                                <div class="district district-3" onclick="selectDistrict(3)">District 3</div>
+                                <div class="district district-4" onclick="selectDistrict(4)">District 4</div>
+                                <div class="district district-5" onclick="selectDistrict(5)">District 5</div>
+                                <div class="district district-6" onclick="selectDistrict(6)">District 6</div>
+                                <div class="district district-7" onclick="selectDistrict(7)">District 7</div>
+                                <div class="district district-8" onclick="selectDistrict(8)">District 8</div>
+                            </div>
+                            <div class="threat-markers" id="threat-markers">
+                                <!-- Markers will be populated by JavaScript -->
+                            </div>
+                            <div class="map-controls">
+                                <button class="map-btn" onclick="refreshMap()" title="Refresh Map">
+                                    <i class="fas fa-sync"></i>
+                                </button>
+                                <button class="map-btn" onclick="toggleHeatmap()" title="Toggle Heatmap">
+                                    <i class="fas fa-fire"></i>
+                                </button>
+                                <button class="map-btn" onclick="fullscreenMap()" title="Fullscreen">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                            <div class="map-legend">
+                                <div class="legend-item">
+                                    <div class="legend-dot" style="background: var(--red-400);"></div>
+                                    <span>Critical</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-dot" style="background: var(--orange-400);"></div>
+                                    <span>High</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-dot" style="background: var(--yellow-400);"></div>
+                                    <span>Medium</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-dot" style="background: var(--emerald-500);"></div>
+                                    <span>Low</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Police Reports -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-clipboard-list"></i>
+                            Recent Police Reports
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="alerts-list" id="police-reports">
+                            <!-- Reports will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Alerts -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-exclamation-triangle" style="color: var(--red-400);"></i>
+                        Active Security Alerts
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="alerts-list" id="alerts-list">
+                        <!-- Alerts will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>System Access</h3>
+                    <div class="footer-links">
+                        <a href="#citizen-portal"><i class="fas fa-user"></i> Citizen Portal</a>
+                        <a href="#government-dashboard"><i class="fas fa-landmark"></i> Government Dashboard</a>
+                        <a href="#admin-panel"><i class="fas fa-cog"></i> Administrator Panel</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Support & Resources</h3>
+                    <div class="footer-links">
+                        <a href="#documentation"><i class="fas fa-book"></i> Documentation</a>
+                        <a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a>
+                        <a href="#contact"><i class="fas fa-envelope"></i> Contact Support</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Transparency</h3>
+                    <div class="footer-links">
+                        <a href="#bias-report"><i class="fas fa-chart-bar"></i> Bias Reporting</a>
+                        <a href="#audit-logs"><i class="fas fa-clipboard-list"></i> Audit Logs</a>
+                        <a href="#committee"><i class="fas fa-users"></i> Oversight Committee</a>
+                        <a href="#public-data"><i class="fas fa-database"></i> Public Data</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 STRATUM - Integrated Social Behavior Assessment System. All rights reserved.
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Confirm Emergency Protocol</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
+            <div class="confirmation-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-danger" id="confirm-btn" onclick="confirmProtocol()">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Confirm Activation
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        const alertsData = [
+            {
+                id: "ALT-2024-001",
+                title: "Suspicious Activity Pattern Detected",
+                description: "Multiple citizens in District 7 showing coordinated movement patterns suggesting potential organized threat.",
+                severity: "critical",
+                timestamp: "2 minutes ago",
+                location: "District 7",
+                type: "Behavioral Analysis"
+            },
+            {
+                id: "ALT-2024-002",
+                title: "System Intrusion Attempt",
+                description: "Unauthorized access attempts detected on citizen database from external IP addresses.",
+                severity: "high",
+                timestamp: "8 minutes ago",
+                location: "Central Server",
+                type: "Cybersecurity"
+            },
+            {
+                id: "ALT-2024-003",
+                title: "Mass Score Manipulation",
+                description: "Artificial score inflation detected across 47 citizen accounts in District 3.",
+                severity: "high",
+                timestamp: "15 minutes ago",
+                location: "District 3",
+                type: "Data Integrity"
+            },
+            {
+                id: "ALT-2024-004",
+                title: "Communication Blackout",
+                description: "Loss of communication with monitoring stations in Districts 5 and 6.",
+                severity: "critical",
+                timestamp: "23 minutes ago",
+                location: "Districts 5-6",
+                type: "Infrastructure"
+            },
+            {
+                id: "ALT-2024-005",
+                title: "Unauthorized Assembly",
+                description: "Large gathering of citizens detected in restricted zone without proper permits.",
+                severity: "medium",
+                timestamp: "35 minutes ago",
+                location: "District 2",
+                type: "Public Order"
+            },
+            {
+                id: "ALT-2024-006",
+                title: "Biometric Spoofing Detected",
+                description: "Multiple instances of biometric authentication bypass attempts at checkpoints.",
+                severity: "high",
+                timestamp: "42 minutes ago",
+                location: "Multiple Checkpoints",
+                type: "Identity Security"
+            }
+        ];
+
+        const policeReports = [
+            {
+                id: "RPT-2024-001",
+                title: "Citizen Compliance Violation",
+                description: "Citizen ID: 00472851 failed to report for mandatory civic duty assessment.",
+                priority: "normal",
+                timestamp: "15 minutes ago",
+                location: "District 4",
+                officer: "Officer Martinez",
+                status: "investigating"
+            },
+            {
+                id: "RPT-2024-002",
+                title: "IEC Score Tampering Attempt",
+                description: "Detected unauthorized modification attempts on citizen score database.",
+                priority: "urgent",
+                timestamp: "32 minutes ago",
+                location: "Central Database",
+                officer: "Cyber Unit Alpha",
+                status: "investigating"
+            },
+            {
+                id: "RPT-2024-003",
+                title: "Restricted Zone Breach",
+                description: "Unauthorized entry detected in Government Sector 7 at 14:23.",
+                priority: "high",
+                timestamp: "1 hour ago",
+                location: "Government Sector 7",
+                officer: "Security Team Beta",
+                status: "resolved"
+            },
+            {
+                id: "RPT-2024-004",
+                title: "Public Disturbance",
+                description: "Minor altercation between citizens regarding resource allocation.",
+                priority: "normal",
+                timestamp: "2 hours ago",
+                location: "District 3 Market",
+                officer: "Officer Chen",
+                status: "resolved"
+            },
+            {
+                id: "RPT-2024-005",
+                title: "Surveillance Equipment Malfunction",
+                description: "Camera network in District 6 experiencing intermittent failures.",
+                priority: "high",
+                timestamp: "3 hours ago",
+                location: "District 6",
+                officer: "Tech Support Unit",
+                status: "pending"
+            }
+        ];
+
+        let currentProtocol = null;
+        const activeProtocols = new Set(['surveillance']);
+        let threatMarkers = [];
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            animateCounters();
+            renderAlerts();
+            renderPoliceReports();
+            generateThreatMarkers();
+            updateThreatLevel();
+            updateProtocolStatuses();
+        });
+
+        // Animate counters
+        function animateCounters() {
+            const counters = [
+                { element: document.getElementById('active-alerts'), target: 28 },
+                { element: document.getElementById('critical-threats'), target: 12 },
+                { element: document.getElementById('investigations'), target: 18 },
+                { element: document.getElementById('response-time'), target: 3 },
+                { element: document.getElementById('low-iec-citizens'), target: 1247 },
+                { element: document.getElementById('surveillance-coverage'), target: 94 },
+                { element: document.getElementById('patrol-units'), target: 23 },
+                { element: document.getElementById('tactical-teams'), target: 8 },
+                { element: document.getElementById('surveillance-drones'), target: 15 },
+                { element: document.getElementById('cyber-units'), target: 6 },
+                { element: document.getElementById('emergency-responders'), target: 12 },
+                { element: document.getElementById('units-deployed'), target: 7 }
+            ];
+
+            counters.forEach(counter => {
+                animateCounter(counter.element, counter.target);
+            });
+        }
+
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(start);
+                }
+            }, 16);
+        }
+
+        // Generate threat markers
+        function generateThreatMarkers() {
+            const markersContainer = document.getElementById('threat-markers');
+            threatMarkers = [];
+            
+            // Generate random threat markers
+            for (let i = 0; i < 15; i++) {
+                const marker = {
+                    id: `marker-${i}`,
+                    x: Math.random() * 90 + 5,
+                    y: Math.random() * 90 + 5,
+                    severity: ['critical', 'high', 'medium', 'low'][Math.floor(Math.random() * 4)],
+                    district: Math.floor(Math.random() * 8) + 1
+                };
+                threatMarkers.push(marker);
+            }
+            
+            renderThreatMarkers();
+        }
+
+        function renderThreatMarkers() {
+            const markersContainer = document.getElementById('threat-markers');
+            markersContainer.innerHTML = threatMarkers.map(marker => `
+                <div class="threat-marker marker-${marker.severity}" 
+                     style="left: ${marker.x}%; top: ${marker.y}%;"
+                     onclick="showMarkerInfo('${marker.id}')"
+                     title="District ${marker.district} - ${marker.severity.toUpperCase()} threat">
+                </div>
+            `).join('');
+        }
+
+        // Render alerts
+        function renderAlerts() {
+            const alertsList = document.getElementById('alerts-list');
+            
+            alertsList.innerHTML = alertsData.map(alert => `
+                <div class="alert-item alert-${alert.severity}">
+                    <div class="alert-header">
+                        <div class="alert-title">${alert.title}</div>
+                        <div class="alert-time">${alert.timestamp}</div>
+                    </div>
+                    <div class="alert-description">${alert.description}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="color: var(--slate-400); font-size: 11px;">
+                            <i class="fas fa-map-marker-alt"></i> ${alert.location} • ${alert.type}
+                        </span>
+                        <span class="status-badge status-${alert.severity}" style="font-size: 10px;">
+                            ${alert.severity.toUpperCase()}
+                        </span>
+                    </div>
+                    <div class="alert-actions">
+                        <button class="alert-btn btn-investigate" onclick="investigateAlert('${alert.id}')">
+                            <i class="fas fa-search"></i> Investigate
+                        </button>
+                        <button class="alert-btn btn-escalate" onclick="escalateAlert('${alert.id}')">
+                            <i class="fas fa-arrow-up"></i> Escalate
+                        </button>
+                        <button class="alert-btn btn-dismiss" onclick="dismissAlert('${alert.id}')">
+                            <i class="fas fa-times"></i> Dismiss
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render police reports
+        function renderPoliceReports() {
+            const reportsList = document.getElementById('police-reports');
+            
+            reportsList.innerHTML = policeReports.map(report => `
+                <div class="report-item report-${report.priority}">
+                    <div class="report-header">
+                        <div class="report-title">${report.title}</div>
+                        <div class="report-time">${report.timestamp}</div>
+                    </div>
+                    <div class="report-description">${report.description}</div>
+                    <div class="report-meta">
+                        <div class="report-location">
+                            <i class="fas fa-map-marker-alt"></i> ${report.location} • ${report.officer}
+                        </div>
+                        <div class="report-status status-${report.status}">${report.status}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update threat level
+        function updateThreatLevel() {
+            const criticalAlerts = alertsData.filter(alert => alert.severity === 'critical').length;
+            const highAlerts = alertsData.filter(alert => alert.severity === 'high').length;
+            
+            const threatLevelElement = document.getElementById('threat-level');
+            
+            if (criticalAlerts >= 3) {
+                threatLevelElement.className = 'threat-level-indicator threat-critical';
+                threatLevelElement.innerHTML = '<i class="fas fa-skull-crossbones"></i><span>Threat Level: Critical</span>';
+            } else if (criticalAlerts >= 1 || highAlerts >= 3) {
+                threatLevelElement.className = 'threat-level-indicator threat-high';
+                threatLevelElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i><span>Threat Level: High</span>';
+            } else if (highAlerts >= 1) {
+                threatLevelElement.className = 'threat-level-indicator threat-medium';
+                threatLevelElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i><span>Threat Level: Medium</span>';
+            } else {
+                threatLevelElement.className = 'threat-level-indicator threat-low';
+                threatLevelElement.innerHTML = '<i class="fas fa-shield-alt"></i><span>Threat Level: Low</span>';
+            }
+        }
+
+        // Update protocol statuses
+        function updateProtocolStatuses() {
+            const protocols = ['lockdown', 'surveillance', 'iec-enforcement'];
+            
+            protocols.forEach(protocol => {
+                const statusElement = document.getElementById(`${protocol}-status`);
+                const btnElement = document.getElementById(`${protocol}-btn`);
+                
+                if (activeProtocols.has(protocol)) {
+                    statusElement.textContent = 'Active';
+                    statusElement.className = 'status-active';
+                    btnElement.innerHTML = `<i class="fas fa-stop"></i> Deactivate`;
+                    btnElement.className = 'btn btn-secondary';
+                    btnElement.onclick = () => deactivateProtocol(protocol);
+                } else {
+                    statusElement.textContent = 'Inactive';
+                    statusElement.className = 'status-inactive';
+                    btnElement.innerHTML = `<i class="fas fa-${getProtocolIcon(protocol)}"></i> Activate ${protocol.charAt(0).toUpperCase() + protocol.slice(1).replace('-', ' ')}`;
+                    btnElement.className = protocol === 'iec-enforcement' ? 'btn btn-purple' : 'btn btn-emergency';
+                    btnElement.onclick = () => activateProtocol(protocol);
+                }
+            });
+        }
+
+        function getProtocolIcon(protocol) {
+            const icons = {
+                lockdown: 'lock',
+                surveillance: 'eye',
+                'iec-enforcement': 'gavel'
+            };
+            return icons[protocol] || 'exclamation-triangle';
+        }
+
+        // Protocol management
+        function activateProtocol(protocol) {
+            currentProtocol = protocol;
+            const protocolNames = {
+                lockdown: 'Emergency Lockdown',
+                surveillance: 'Enhanced Surveillance',
+                'iec-enforcement': 'IEC Score Enforcement'
+            };
+
+            const protocolDescriptions = {
+                lockdown: 'This will immediately restrict all citizen movement and activate security checkpoints across all districts. This action cannot be undone easily and will affect all citizens.',
+                surveillance: 'This will activate advanced monitoring systems and increase surveillance coverage across all sectors.',
+                'iec-enforcement': 'This will execute emergency protocols on citizens with low IEC scores, including movement restrictions, service suspensions, and enhanced monitoring.'
+            };
+
+            document.getElementById('modal-title').textContent = `Activate ${protocolNames[protocol]}`;
+            document.getElementById('modal-body').innerHTML = `
+                <div style="background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.2); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <i class="fas fa-exclamation-triangle" style="color: var(--red-400);"></i>
+                        <strong style="color: var(--red-400);">WARNING: EMERGENCY PROTOCOL ACTIVATION</strong>
+                    </div>
+                    <p style="color: var(--slate-300); font-size: 14px;">This action will have immediate and widespread effects on all citizens and systems.</p>
+                </div>
+                
+                <p style="margin-bottom: 16px;">${protocolDescriptions[protocol]}</p>
+                
+                <div style="background: rgba(30, 41, 59, 0.3); border-radius: 8px; padding: 12px;">
+                    <div style="color: var(--slate-400); font-size: 12px; margin-bottom: 8px;">AUTHORIZATION REQUIRED:</div>
+                    <div style="color: var(--slate-300); font-size: 14px;">
+                        • Administrator Level: <span style="color: var(--emerald-400);">✓ Verified</span><br>
+                        • Security Clearance: <span style="color: var(--emerald-400);">✓ Level 5</span><br>
+                        • Emergency Authority: <span style="color: var(--emerald-400);">✓ Granted</span>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('confirmation-modal').classList.add('active');
+        }
+
+        function deactivateProtocol(protocol) {
+            activeProtocols.delete(protocol);
+            updateProtocolStatuses();
+            showNotification('Protocol Deactivated', `${protocol.charAt(0).toUpperCase() + protocol.slice(1).replace('-', ' ')} protocol has been deactivated.`, 'success');
+        }
+
+        function confirmProtocol() {
+            if (currentProtocol) {
+                activeProtocols.add(currentProtocol);
+                updateProtocolStatuses();
+                showNotification('Emergency Protocol Activated', `${currentProtocol.charAt(0).toUpperCase() + currentProtocol.slice(1).replace('-', ' ')} protocol is now active.`, 'warning');
+                
+                // Simulate system-wide effects
+                if (currentProtocol === 'lockdown') {
+                    updateThreatLevel();
+                }
+                
+                closeModal();
+                currentProtocol = null;
+            }
+        }
+
+        // IEC Enforcement Actions
+        function executeIECAction(action) {
+            const actionNames = {
+                'movement-restriction': 'Movement Restriction',
+                'service-suspension': 'Service Suspension',
+                'enhanced-monitoring': 'Enhanced Monitoring',
+                'detention-protocol': 'Detention Protocol'
+            };
+
+            const thresholds = {
+                'movement-restriction': document.getElementById('movement-threshold').value,
+                'service-suspension': document.getElementById('service-threshold').value,
+                'enhanced-monitoring': document.getElementById('monitoring-threshold').value,
+                'detention-protocol': document.getElementById('detention-threshold').value
+            };
+
+            const threshold = thresholds[action];
+            const actionName = actionNames[action];
+
+            // Simulate execution
+            showNotification(`${actionName} Executed`, `${actionName} has been applied to all citizens with IEC scores below ${threshold}.`, 'warning');
+            
+            // Add to police reports
+            const newReport = {
+                id: `RPT-2024-${String(policeReports.length + 1).padStart(3, '0')}`,
+                title: `${actionName} Executed`,
+                description: `Automated ${actionName.toLowerCase()} applied to citizens with IEC scores below ${threshold}.`,
+                priority: 'urgent',
+                timestamp: 'Just now',
+                location: 'System-wide',
+                officer: 'Automated System',
+                status: 'investigating'
+            };
+            
+            policeReports.unshift(newReport);
+            renderPoliceReports();
+        }
+
+        // Map functions
+        function selectDistrict(districtNumber) {
+            const district = document.querySelector(`.district-${districtNumber}`);
+            
+            // Remove previous selections
+            document.querySelectorAll('.district').forEach(d => {
+                d.style.borderColor = 'rgba(100, 116, 139, 0.3)';
+                d.style.background = 'rgba(30, 41, 59, 0.2)';
+            });
+            
+            // Highlight selected district
+            district.style.borderColor = 'var(--blue-400)';
+            district.style.background = 'rgba(96, 165, 250, 0.2)';
+            
+            showNotification('District Selected', `District ${districtNumber} selected for monitoring.`, 'info');
+        }
+
+        function refreshMap() {
+            generateThreatMarkers();
+            showNotification('Map Refreshed', 'Threat markers have been updated with latest data.', 'info');
+        }
+
+        function toggleHeatmap() {
+            showNotification('Heatmap Toggle', 'Heatmap view toggled (feature in development).', 'info');
+        }
+
+        function fullscreenMap() {
+            const mapElement = document.querySelector('.threat-map');
+            if (mapElement.requestFullscreen) {
+                mapElement.requestFullscreen();
+            }
+        }
+
+        function showMarkerInfo(markerId) {
+            const marker = threatMarkers.find(m => m.id === markerId);
+            if (marker) {
+                showNotification('Threat Marker', `District ${marker.district} - ${marker.severity.toUpperCase()} threat detected.`, 'warning');
+            }
+        }
+
+        // Alert actions
+        function investigateAlert(alertId) {
+            const alert = alertsData.find(a => a.id === alertId);
+            if (alert) {
+                showNotification('Investigation Started', `Investigation initiated for alert: ${alert.title}`, 'info');
+            }
+        }
+
+        function escalateAlert(alertId) {
+            const alert = alertsData.find(a => a.id === alertId);
+            if (alert) {
+                alert.severity = alert.severity === 'medium' ? 'high' : 'critical';
+                renderAlerts();
+                updateThreatLevel();
+                showNotification('Alert Escalated', `Alert ${alertId} has been escalated to ${alert.severity} priority.`, 'warning');
+            }
+        }
+
+        function dismissAlert(alertId) {
+            const alertIndex = alertsData.findIndex(a => a.id === alertId);
+            if (alertIndex !== -1) {
+                alertsData.splice(alertIndex, 1);
+                renderAlerts();
+                updateThreatLevel();
+                showNotification('Alert Dismissed', `Alert ${alertId} has been dismissed.`, 'success');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('confirmation-modal').classList.remove('active');
+            currentProtocol = null;
+        }
+
+        // Notification system
+        function showNotification(title, message, type = 'info') {
+            const notification = document.createElement('div');
+            const colors = {
+                success: 'var(--emerald-400)',
+                error: 'var(--red-400)',
+                info: 'var(--blue-400)',
+                warning: 'var(--yellow-400)'
+            };
+
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--slate-900);
+                border: 1px solid var(--slate-800);
+                border-left: 4px solid ${colors[type]};
+                border-radius: 8px;
+                padding: 16px 20px;
+                z-index: 10000;
+                opacity: 0;
+                transform: translateX(100%);
+                transition: all 0.3s ease;
+                max-width: 350px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                    <i class="fas fa-info-circle" style="color: ${colors[type]};"></i>
+                    <strong style="color: white;">${title}</strong>
+                </div>
+                <div style="color: var(--slate-300); font-size: 14px;">${message}</div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('confirmation-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Simulate real-time updates
+        setInterval(() => {
+            // Randomly update threat markers
+            threatMarkers.forEach(marker => {
+                marker.x = Math.max(5, Math.min(95, marker.x + (Math.random() - 0.5) * 10));
+                marker.y = Math.max(5, Math.min(95, marker.y + (Math.random() - 0.5) * 10));
+            });
+            renderThreatMarkers();
+        }, 15000);
+
+        // Auto-refresh alerts every 30 seconds
+        setInterval(() => {
+            console.log('Refreshing alerts...');
+            // In a real application, this would fetch fresh data
+        }, 30000);
+    </script>
+</body>
+</html>

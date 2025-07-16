@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STRATUM - Government Assessment System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --slate-950: #020617;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748b;
+            --slate-400: #94a3b8;
+            --slate-300: #cbd5e1;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            
+            --purple-400: #a78bfa;
+            --purple-500: #8b5cf6;
+            --purple-600: #7c3aed;
+            
+            --emerald-400: #34d399;
+            --emerald-500: #10b981;
+            
+            --yellow-400: #fbbf24;
+            --yellow-500: #f59e0b;
+            
+            --red-400: #f87171;
+            --red-500: #ef4444;
+            --red-600: #dc2626;
+
+            
+            --orange-400: #fb923c;
+            --orange-500: #f97316;
+            
+            --cyan-400: #22d3ee;
+            --pink-600: #db2777;
+
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--slate-950) 0%, var(--slate-900) 50%, var(--slate-800) 100%);
+            color: white;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--blue-500), var(--purple-600));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--blue-400), var(--purple-400));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text p {
+            font-size: 10px;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .gov-badge {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--red-400);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--slate-400);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .nav-links a.active {
+            color: var(--blue-400);
+            border-bottom: 2px solid var(--blue-400);
+        }
+
+        .nav-links a:hover {
+            color: var(--slate-300);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--red-500), var(--pink-600));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 32px 0;
+        }
+
+        /* Overview Cards */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--slate-800);
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            background: rgba(15, 23, 42, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .overview-card {
+            padding: 24px;
+        }
+
+        .overview-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .overview-info h3 {
+            color: var(--slate-400);
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .overview-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .overview-trend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+        }
+
+        .trend-up { color: var(--emerald-400); }
+        .trend-down { color: var(--red-400); }
+
+        .overview-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .overview-icon {
+            transform: scale(1.1);
+        }
+
+        .icon-blue { background: rgba(96, 165, 250, 0.2); color: var(--blue-400); }
+        .icon-red { background: rgba(248, 113, 113, 0.2); color: var(--red-400); }
+        .icon-emerald { background: rgba(52, 211, 153, 0.2); color: var(--emerald-400); }
+        .icon-yellow { background: rgba(251, 191, 36, 0.2); color: var(--yellow-400); }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+            width: 100%;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Card Headers */
+        .card-header {
+            padding: 24px 24px 0 24px;
+        }
+
+        .card-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .title-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .dot-blue { background: var(--blue-400); }
+        .dot-purple { background: var(--purple-400); }
+        .dot-yellow { background: var(--yellow-400); }
+        .dot-cyan { background: var(--cyan-400); }
+
+        .card-content {
+            padding: 0 24px 24px 24px;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            height: 256px;
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(51, 65, 85, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-content {
+            text-align: center;
+            z-index: 10;
+        }
+
+        .chart-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .chart-trend {
+            color: var(--emerald-400);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        /* Chart Background Animation */
+        .chart-bg {
+            position: absolute;
+            inset: 0;
+            opacity: 0.2;
+        }
+
+        .chart-bg svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Quarter Stats */
+        .quarter-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .quarter-item {
+            text-align: center;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 8px;
+        }
+
+        .quarter-value {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .quarter-label {
+            font-size: 10px;
+            color: var(--slate-400);
+            text-transform: uppercase;
+        }
+
+        /* Score Distribution */
+        .distribution-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .distribution-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .distribution-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+        }
+
+        .distribution-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-bar {
+            width: 96px;
+            height: 8px;
+            background: var(--slate-700);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .distribution-percentage {
+            font-size: 14px;
+            font-weight: bold;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        /* Appeal Stats */
+        .appeal-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .appeal-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid;
+        }
+
+        .badge-emerald {
+            color: var(--emerald-400);
+            background: rgba(52, 211, 153, 0.1);
+            border-color: rgba(52, 211, 153, 0.2);
+        }
+
+        .badge-red {
+            color: var(--red-400);
+            background: rgba(248, 113, 113, 0.1);
+            border-color: rgba(248, 113, 113, 0.2);
+        }
+
+        .badge-yellow {
+            color: var(--yellow-400);
+            background: rgba(251, 191, 36, 0.1);
+            border-color: rgba(251, 191, 36, 0.2);
+        }
+
+        /* Risk Matrix */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .risk-item {
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid;
+        }
+
+        .risk-low {
+            background: rgba(30, 41, 59, 0.3);
+            border-color:rgba(51, 65, 85, 0.5);
+        }
+
+        .risk-medium {
+            background: rgba(30, 41, 59, 0.3);
+            border-color:rgba(51, 65, 85, 0.5);
+        }
+
+        .risk-high {
+            background: rgba(30, 41, 59, 0.3);
+            border-color:rgba(51, 65, 85, 0.5);
+        }
+
+        .risk-critical {
+            background: rgba(30, 41, 59, 0.3);
+            border-color:rgba(51, 65, 85, 0.5);
+        }
+
+        .risk-number {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .risk-label {
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .risk-percentage {
+            color: var(--slate-400);
+            font-size: 11px;
+        }
+
+        /* Risk Trend Analysis */
+        .trend-analysis {
+            margin-top: 24px;
+            padding: 16px;
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 8px;
+            align-items: center;
+        }
+
+        .trend-title {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-align: center;
+            margin-bottom: 35px;
+            font-size:20px;
+;
+        }
+
+        .trend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            align-items: center;
+        }
+
+        .trend-item {
+            display: flex;
+            gap: 6px;
+            font-size: 18px;
+            align-items: center;      /* centra verticalmente */
+            justify-content: center;  /* centra horizontalmente */
+        }
+        /* District Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .district-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .district-table th,
+        .district-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+        }
+
+        .district-table th {
+            color: var(--slate-400);
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .district-table tr:hover {
+            background: rgba(30, 41, 59, 0.3);
+        }
+
+        .district-name {
+            color: white;
+            font-weight: 500;
+        }
+
+        .district-population {
+            color: var(--slate-300);
+        }
+
+        .score-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: monospace;
+            border: 1px solid;
+        }
+
+        .score-excellent {
+            color: var(--emerald-400);
+            background: rgba(52, 211, 153, 0.1);
+            border-color: rgba(52, 211, 153, 0.2);
+        }
+
+        .score-good {
+            color: var(--blue-400);
+            background: rgba(96, 165, 250, 0.1);
+            border-color: rgba(96, 165, 250, 0.2);
+        }
+
+        .score-average {
+            color: var(--yellow-400);
+            background: rgba(251, 191, 36, 0.1);
+            border-color: rgba(251, 191, 36, 0.2);
+        }
+
+        .score-poor {
+            color: var(--red-400);
+            background: rgba(248, 113, 113, 0.1);
+            border-color: rgba(248, 113, 113, 0.2);
+        }
+
+        .trend-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .trend-up-icon { color: var(--emerald-400); }
+        .trend-down-icon { color: var(--red-400); }
+        .trend-stable-icon { 
+            width: 16px; 
+            height: 2px; 
+            background: var(--slate-400); 
+            border-radius: 1px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+            
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quarter-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .risk-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--slate-800);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--slate-600);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--slate-500);
+        }
+
+          /* Enhanced Footer */
+          .footer {
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-cyan);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--text-secondary);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(148, 163, 184, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary-cyan);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .alert-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--red-500);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-family: "Segoe UI", sans-serif;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow:
+            0 2px 5px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition:
+            background-color 0.4s ease,
+            box-shadow 0.3s ease,
+            transform 0.2s ease;
+        }
+
+        .alert-link:hover {
+            background-color: var(--red-600);
+            box-shadow:
+            0 4px 10px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .alert-link:focus {
+            outline: none;
+            box-shadow:
+            0 0 0 3px rgba(198, 40, 40, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-shape"></div>
+        <div class="bg-shape"></div>
+        <div class="bg-shape"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="nav-left">
+                    <div class="logo-section">
+                        <div class="logo-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h1>STRATUM</h1>
+                            <p>Government Portal</p>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="nav-links">
+                    <li><a href="#" class="active">Dashboard</a></li>
+                    <li><a href="Goverment-Alert.html">Alerts</a></li>
+                    <li><a href="Goverment-Reports.html">Reports</a></li>
+                </ul>
+
+                <div class="nav-right">
+                    <a href="Goverment-Alert.html" class="alert-link">Active Alerts</a>
+                    <div class="avatar">GA</div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- System Overview -->
+            <div class="overview-grid">
+                <div class="card">
+                    <div class="overview-card">
+                        <div class="overview-content">
+                            <div class="overview-info">
+                                <h3>Total Citizens</h3>
+                                <div class="overview-number" id="citizens-counter">0</div>
+                                <div class="overview-trend trend-up">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+2.3% this month</span>
+                                </div>
+                            </div>
+                            <div class="overview-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="overview-card">
+                        <div class="overview-content">
+                            <div class="overview-info">
+                                <h3>Active Alerts</h3>
+                                <div class="overview-number" id="alerts-counter">0</div>
+                                <div class="overview-trend trend-down">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span>-15% this week</span>
+                                </div>
+                            </div>
+                            <div class="overview-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="overview-card">
+                        <div class="overview-content">
+                            <div class="overview-info">
+                                <h3>Compliance Rate</h3>
+                                <div class="overview-number" id="compliance-counter">0</div>
+                                <div class="overview-trend trend-up">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+0.8% this month</span>
+                                </div>
+                            </div>
+                            <div class="overview-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="overview-card">
+                        <div class="overview-content">
+                            <div class="overview-info">
+                                <h3>Pending Appeals</h3>
+                                <div class="overview-number" id="appeals-counter">0</div>
+                                <div class="overview-trend trend-up">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+12% this week</span>
+                                </div>
+                            </div>
+                            <div class="overview-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Layout -->
+            <div class="dashboard">
+                <!-- Main Content -->
+                <div class="main-content">
+                    <!-- IEC Score Evolution -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-chart-line"></i>
+                                IEC Score Evolution
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="chart-container">
+                                <div class="chart-bg">
+                                    <svg viewBox="0 0 400 200">
+                                        <defs>
+                                            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.8" />
+                                                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.1" />
+                                            </linearGradient>
+                                        </defs>
+                                        <path d="M 0 150 Q 50 120 100 130 T 200 110 T 300 90 T 400 80" stroke="#3b82f6" stroke-width="3" fill="none" />
+                                        <path d="M 0 150 Q 50 120 100 130 T 200 110 T 300 90 T 400 80 L 400 200 L 0 200 Z" fill="url(#scoreGradient)" />
+                                    </svg>
+                                </div>
+                                <div class="chart-content">
+                                    <div class="chart-value">Average Score: 726</div>
+                                    <div class="chart-trend">
+                                        <i class="fas fa-arrow-up"></i>
+                                        +12 points this quarter
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="quarter-stats">
+                                <div class="quarter-item">
+                                    <div class="quarter-value stat-emerald">785</div>
+                                    <div class="quarter-label">Q4 2024</div>
+                                </div>
+                                <div class="quarter-item">
+                                    <div class="quarter-value stat-blue">742</div>
+                                    <div class="quarter-label">Q3 2024</div>
+                                </div>
+                                <div class="quarter-item">
+                                    <div class="quarter-value stat-yellow">698</div>
+                                    <div class="quarter-label">Q2 2024</div>
+                                </div>
+                                <div class="quarter-item">
+                                    <div class="quarter-value">673</div>
+                                    <div class="quarter-label">Q1 2024</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Score Distribution and Appeal Rates -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                        <!-- Score Distribution -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    Score Distribution
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <div class="distribution-item">
+                                    <div class="distribution-left">
+                                        <div class="distribution-color" style="background: var(--emerald-400);"></div>
+                                        <span style="color: var(--slate-300);">Excellent (700+)</span>
+                                    </div>
+                                    <div class="distribution-right">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="background: var(--emerald-400); width: 75%;"></div>
+                                        </div>
+                                        <span class="distribution-percentage stat-emerald">28.5%</span>
+                                    </div>
+                                </div>
+
+                                <div class="distribution-item">
+                                    <div class="distribution-left">
+                                        <div class="distribution-color" style="background: var(--yellow-400);"></div>
+                                        <span style="color: var(--slate-300);">Average (600-699)</span>
+                                    </div>
+                                    <div class="distribution-right">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="background: var(--yellow-400); width: 50%;"></div>
+                                        </div>
+                                        <span class="distribution-percentage stat-yellow">24.8%</span>
+                                    </div>
+                                </div>
+
+                                <div class="distribution-item">
+                                    <div class="distribution-left">
+                                        <div class="distribution-color" style="background: var(--red-400);"></div>
+                                        <span style="color: var(--slate-300);">Poor (Below 600)</span>
+                                    </div>
+                                    <div class="distribution-right">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="background: var(--red-400); width: 25%;"></div>
+                                        </div>
+                                        <span class="distribution-percentage stat-red">11.5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Appeal Statistics -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    Appeal Statistics
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <div class="appeal-item">
+                                    <span style="color: var(--slate-300);">Total Appeals (2024)</span>
+                                    <span style="color: white; font-weight: bold;">1,847</span>
+                                </div>
+
+                                <div class="appeal-item">
+                                    <span style="color: var(--slate-300);">Approved</span>
+                                    <div class="appeal-right">
+                                        <span style="color: var(--emerald-400); font-weight: bold;">1,203</span>
+                                        <span class="badge badge-emerald">65.1%</span>
+                                    </div>
+                                </div>
+
+                                <div class="appeal-item">
+                                    <span style="color: var(--slate-300);">Rejected</span>
+                                    <div class="appeal-right">
+                                        <span style="color: var(--red-400); font-weight: bold;">488</span>
+                                        <span class="badge badge-red">26.4%</span>
+                                    </div>
+                                </div>
+
+                                <div class="appeal-item">
+                                    <span style="color: var(--slate-300);">Pending</span>
+                                    <div class="appeal-right">
+                                        <span style="color: var(--yellow-400); font-weight: bold;">156</span>
+                                        <span class="badge badge-yellow">8.5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Risk Assessment Matrix -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                Risk Assessment Matrix
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="risk-grid">
+                                <div class="risk-item risk-low">
+                                    <div class="risk-number stat-emerald">42,847</div>
+                                    <div class="risk-label stat-emerald">Low Risk</div>
+                                    <div class="risk-percentage">90.7% of population</div>
+                                </div>
+
+                                <div class="risk-item risk-medium">
+                                    <div class="risk-number stat-yellow">3,247</div>
+                                    <div class="risk-label stat-yellow">Medium Risk</div>
+                                    <div class="risk-percentage">6.9% of population</div>
+                                </div>
+
+                                <div class="risk-item risk-high">
+                                    <div class="risk-number">892</div>
+                                    <div class="risk-label">High Risk</div>
+                                    <div class="risk-percentage">1.9% of population</div>
+                                </div>
+
+                                <div class="risk-item risk-critical">
+                                    <div class="risk-number" style="color: var(--red-400);">265</div>
+                                    <div class="risk-label" style="color: var(--red-400);">Critical Risk</div>
+                                    <div class="risk-percentage" style="color: var(--red-400);">0.5% of population</div>
+                                </div>
+                            </div>
+
+                            <div class="trend-analysis">
+                                <h4 class="trend-title">Risk Trend Analysis</h4>
+                                <div class="trend-grid">
+                                    <div class="trend-item">
+                                        <i class="fas fa-arrow-down"></i>
+                                        <span style="color: white;">High Risk cases</span>
+                                        <span class="stat-emerald">-15%</span>
+                                    </div>
+                                    <div class="trend-item">
+                                        <i class="fas fa-arrow-up stat-yellow"></i>
+                                        <span style = "color:white;">Appeal success rate</span>
+                                        <span class="stat-yellow">+8%</span>
+                                    </div>
+                                    <div class="trend-item">
+                                        <i class="fas fa-arrow-up stat-blue"></i>
+                                        <span style="color: white;">Avg processing time</span>
+                                        <span class="stat-blue">-23%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- District Performance Comparison -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <div class="title-dot dot-cyan"></div>
+                                District Performance Comparison
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="table-container">
+                                <table class="district-table">
+                                    <thead>
+                                        <tr>
+                                            <th>District</th>
+                                            <th>Population</th>
+                                            <th>Avg Score</th>
+                                            <th>Compliance Rate</th>
+                                            <th>High Risk %</th>
+                                            <th>Trend</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="district-table-body">
+                                        <!-- Table content will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>System Access</h3>
+                    <div class="footer-links">
+                        <a href="#citizen-portal"><i class="fas fa-user"></i> Citizen Portal</a>
+                        <a href="#government-dashboard"><i class="fas fa-landmark"></i> Government Dashboard</a>
+                        <a href="#admin-panel"><i class="fas fa-cog"></i> Administrator Panel</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Support & Resources</h3>
+                    <div class="footer-links">
+                        <a href="#documentation"><i class="fas fa-book"></i> Documentation</a>
+                        <a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a>
+                        <a href="#contact"><i class="fas fa-envelope"></i> Contact Support</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Transparency</h3>
+                    <div class="footer-links">
+                        <a href="#bias-report"><i class="fas fa-chart-bar"></i> Bias Reporting</a>
+                        <a href="#audit-logs"><i class="fas fa-clipboard-list"></i> Audit Logs</a>
+                        <a href="#committee"><i class="fas fa-users"></i> Oversight Committee</a>
+                        <a href="#public-data"><i class="fas fa-database"></i> Public Data</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 STRATUM - Integrated Social Behavior Assessment System. All rights reserved.
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animated counters
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(start).toLocaleString();
+                }
+            }, 16);
+        }
+
+        // Initialize counters
+        document.addEventListener('DOMContentLoaded', function() {
+            const counters = [
+                { element: document.getElementById('citizens-counter'), target: 47251 },
+                { element: document.getElementById('alerts-counter'), target: 23 },
+                { element: document.getElementById('compliance-counter'), target: 94 },
+                { element: document.getElementById('appeals-counter'), target: 156 }
+            ];
+
+            counters.forEach(counter => {
+                animateCounter(counter.element, counter.target);
+            });
+
+            // Populate district table
+            populateDistrictTable();
+
+            // Animate progress bars
+            setTimeout(() => {
+                animateProgressBars();
+            }, 500);
+        });
+
+        // District data
+        const districtData = [
+            { district: "District 1", population: "8,247", avgScore: 789, compliance: 96.2, highRisk: 1.2, trend: "up" },
+            { district: "District 2", population: "6,892", avgScore: 756, compliance: 94.8, highRisk: 2.1, trend: "up" },
+            { district: "District 3", population: "7,156", avgScore: 734, compliance: 93.1, highRisk: 2.8, trend: "stable" },
+            { district: "District 4", population: "5,934", avgScore: 712, compliance: 91.7, highRisk: 3.4, trend: "down" },
+            { district: "District 5", population: "6,428", avgScore: 698, compliance: 89.3, highRisk: 4.2, trend: "down" },
+            { district: "District 6", population: "4,892", avgScore: 681, compliance: 87.9, highRisk: 5.1, trend: "stable" },
+            { district: "District 7", population: "5,247", avgScore: 654, compliance: 85.2, highRisk: 6.8, trend: "up" },
+            { district: "District 8", population: "2,455", avgScore: 623, compliance: 82.1, highRisk: 8.9, trend: "down" }
+        ];
+
+        function getScoreClass(score) {
+            if (score >= 700) return 'score-excellent';
+            if (score >= 600) return 'score-average';
+            return 'score-poor';
+        }
+
+        function getTrendIcon(trend) {
+            switch(trend) {
+                case 'up':
+                    return '<i class="fas fa-arrow-up trend-up-icon"></i>';
+                case 'down':
+                    return '<i class="fas fa-arrow-down trend-down-icon"></i>';
+                case 'stable':
+                    return '<div class="trend-stable-icon"></div>';
+                default:
+                    return '';
+            }
+        }
+
+        function getHighRiskColor(risk) {
+            if (risk > 5) return 'stat-red';
+            if (risk > 3) return 'stat-yellow';
+            return 'stat-emerald';
+        }
+
+        function populateDistrictTable() {
+            const tbody = document.getElementById('district-table-body');
+            
+            tbody.innerHTML = districtData.map(district => `
+                <tr>
+                    <td class="district-name">${district.district}</td>
+                    <td class="district-population">${district.population}</td>
+                    <td>
+                        <span class="score-badge ${getScoreClass(district.avgScore)}">${district.avgScore}</span>
+                    </td>
+                    <td class="district-population">${district.compliance}%</td>
+                    <td>
+                        <span class="${getHighRiskColor(district.highRisk)}">${district.highRisk}%</span>
+                    </td>
+                    <td>${getTrendIcon(district.trend)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function animateProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        }
+
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Add click effect to avatar
+            const avatar = document.querySelector('.avatar');
+            avatar.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+
+        // Simulate real-time updates
+        setInterval(() => {
+            const statusDot = document.querySelector('.status-dot');
+            statusDot.style.animation = 'none';
+            setTimeout(() => {
+                statusDot.style.animation = 'pulse 2s infinite';
+            }, 100);
+        }, 15000);
+    </script>
+</body>
+</html>
